@@ -1,4 +1,4 @@
-package proyecto05.controller;
+package gamedb.controller;
 
 public class PanelPrincipalController {
 

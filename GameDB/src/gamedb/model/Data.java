@@ -1,4 +1,4 @@
-package proyecto05.model;
+package gamedb.model;
 
 public class Data {
 

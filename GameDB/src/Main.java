@@ -1,7 +1,7 @@
+import gamedb.gui.VentanaPrincipal;
+
 import java.awt.Dimension;
 import java.awt.Toolkit;
-
-import proyecto05.gui.VentanaPrincipal;
 
 
 public class Main {
