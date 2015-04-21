@@ -23,7 +23,6 @@ public class VentanaPrincipal extends JFrame {
 		size = d;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(true);
-		setLocationRelativeTo(null);
 		
 		setTitle("JUEGOS APP");
 		setSize((int) size.getWidth()/4, (int) size.getHeight()/2);
