@@ -26,7 +26,7 @@ public class VentanaPrincipal extends JFrame {
 		
 		setTitle("JUEGOS APP");
 		setSize((int) size.getWidth()/4, (int) size.getHeight()/2);
-		
+		System.out.println(getWidth());
 		getContentPane().setLayout(new CardLayout(20, 20));
 		
 		colocarMenu();
