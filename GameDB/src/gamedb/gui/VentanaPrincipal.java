@@ -1,38 +1,51 @@
 package gamedb.gui;
 
+import gamedb.controller.PanelPrincipalController;
+import gamedb.controller.VentanaPricipalController;
+import gamedb.model.ConexionBD;
+
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
-import javax.swing.JMenuBar;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 
 public class VentanaPrincipal extends JFrame {
 
 	private Dimension size;
 	private PanelPrincipal panelPrincipal;
+	private PanelJuegos panelJuegos;
 	private JMenu menuPrincipal, menuJuegos, menuPerfil;
 	private JMenuItem itemPrincipal, itemJuegos, itemPerfil;
 	private JMenuBar barra;
+	private VentanaPricipalController controlador;
 	
-	public VentanaPrincipal(Dimension d) {
+	public VentanaPrincipal(Dimension d, ConexionBD bd) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(VentanaPrincipal.class.getResource("/gamedb/images/VideojuegosIcono.png")));
 		
 		size = d;
+		controlador = new VentanaPricipalController(this);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(true);
 		
 		setTitle("JUEGOS APP");
 		setSize((int) size.getWidth()/4, (int) size.getHeight()/2);
-		System.out.println(getWidth());
 		getContentPane().setLayout(new CardLayout(20, 20));
 		
 		colocarMenu();
 		
-		panelPrincipal = new PanelPrincipal(getSize());
-		getContentPane().add("Principal", panelPrincipal);
+		panelPrincipal = new PanelPrincipal(getSize(), new PanelPrincipalController(this), bd);
+		getContentPane().add(panelPrincipal.getName(), panelPrincipal);
+		panelPrincipal.cargaDatos();
+		
+		panelJuegos = new PanelJuegos(getSize());
+		getContentPane().add(panelJuegos.getName(), panelJuegos);
 		
 		setVisible(true);
 	}
@@ -49,6 +62,14 @@ public class VentanaPrincipal extends JFrame {
 		// ITEMS MENU PRINCIPAL
 		itemPrincipal = new JMenuItem("Principal");
 		menuPrincipal.add(itemPrincipal);
+		itemPrincipal.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				controlador.panelPrincipal();
+			}
+		});
 		
 		//MENU JUEGOS
 		menuJuegos = new JMenu("Juegos");
@@ -56,6 +77,14 @@ public class VentanaPrincipal extends JFrame {
 		//ITEMS MENU JUEGOS
 		itemJuegos = new JMenuItem("Juegos");
 		menuJuegos.add(itemJuegos);
+		itemJuegos.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				controlador.panelJuegos();
+			}
+		});
 		
 		//MENU PERFIL
 		menuPerfil = new JMenu("Perfil");
@@ -64,5 +93,41 @@ public class VentanaPrincipal extends JFrame {
 		itemPerfil = new JMenuItem("Perfil");
 		menuPerfil.add(itemPerfil);
 		
+	}
+
+	public JPanel getPanelPrincipal() {
+		return panelPrincipal;
+	}
+
+	public JPanel getPanelJuegos() {
+		return panelJuegos;
+	}
+
+	public JMenu getMenuPrincipal() {
+		return menuPrincipal;
+	}
+
+	public JMenu getMenuJuegos() {
+		return menuJuegos;
+	}
+
+	public JMenu getMenuPerfil() {
+		return menuPerfil;
+	}
+
+	public JMenuItem getItemPrincipal() {
+		return itemPrincipal;
+	}
+
+	public JMenuItem getItemJuegos() {
+		return itemJuegos;
+	}
+
+	public JMenuItem getItemPerfil() {
+		return itemPerfil;
+	}
+
+	public JMenuBar getBarra() {
+		return barra;
 	}
 }

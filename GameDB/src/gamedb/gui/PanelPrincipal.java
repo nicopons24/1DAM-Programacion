@@ -1,10 +1,18 @@
 package gamedb.gui;
 
+import gamedb.controller.PanelPrincipalController;
+import gamedb.model.ConexionBD;
+import gamedb.model.PanelPrincipalModel;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -14,26 +22,28 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.border.LineBorder;
 
-import java.awt.Insets;
-
 public class PanelPrincipal extends JPanel{
 	
 	private Dimension size;
 	private JPasswordField contrasea;
-	private JComboBox usuario;
+	private JComboBox<String> usuario;
 	private JButton login, registrarse, juegos, perfil;
+	private PanelPrincipalController controlador;
+	private PanelPrincipalModel modelo;
 	
 	
-	public PanelPrincipal(Dimension d) {
+	public PanelPrincipal(Dimension d, PanelPrincipalController c, ConexionBD bd) {
 		
 		size = d;
+		controlador = c;
+		modelo = new PanelPrincipalModel(bd);
+		setName("Principal");
 		
 		setLayout(new GridBagLayout());
 		
 		colocaComponentes();
 		
 		setVisible(true);
-		
 	}
 	
 	private void colocaComponentes() {
@@ -57,7 +67,7 @@ public class PanelPrincipal extends JPanel{
 		GridBagConstraints posLblUsuario = new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0);
 		add(lblUsuario, posLblUsuario);
 		
-		usuario = new JComboBox();
+		usuario = new JComboBox<String>();
 		usuario.setToolTipText("Tipo de usuario");
 		// posicion en el layout y propiedades
 		GridBagConstraints posUsuario = new GridBagConstraints(0, 3, 2, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0);
@@ -94,6 +104,12 @@ public class PanelPrincipal extends JPanel{
 			// posicion en el layout y propiedades
 		GridBagConstraints posJuegos = new GridBagConstraints(2, 0, 1, 1, 1.0, 1.0, GridBagConstraints.SOUTH, GridBagConstraints.HORIZONTAL, insets, 0, 0);
 		add(juegos, posJuegos);
+		juegos.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controlador.botonJuegos();
+			}
+		});
 		
 		perfil = new JButton("Perfil >");
 		perfil.setToolTipText("Ir al perfil del usuario");
@@ -102,13 +118,9 @@ public class PanelPrincipal extends JPanel{
 		add(perfil, posPerfil);
 		
 	}
+	
 	/**
 	 *	Redimensiona una imagen recibida como parametro y la devuelve redimensionada.
-	 *	PARAMETROS:
-	 *		-	int width: ancho de la imagen (tamaño minimo 10).
-	 *		-	int height: alto de la imagen (tamaño minimo 10).
-	 *		-	ImageIcon i: la imagen a redimensionar.
-	 * 
 	 */
 	private ImageIcon redimensionar(int width, int height, ImageIcon i) {
 		// si el tamaño es menor de 10x10, coloca el tamaño minimo 10x10
@@ -120,4 +132,33 @@ public class PanelPrincipal extends JPanel{
 		Image redimension = imgIcon.getScaledInstance(width, height, Image.SCALE_SMOOTH); // Redimensionamos la imagen
 		return i = new ImageIcon(redimension);
 	}
+	
+	public void cargaDatos() {
+		ArrayList<String> usuarios = modelo.consultaUsuarios();
+		controlador.muestraUsuarios(usuarios);
+	}
+
+	public JPasswordField getContrasea() {
+		return contrasea;
+	}
+
+	public JComboBox<String> getUsuario() {
+		return usuario;
+	}
+
+	public JButton getLogin() {
+		return login;
+	}
+
+	public JButton getRegistrarse() {
+		return registrarse;
+	}
+
+	public JButton getJuegos() {
+		return juegos;
+	}
+
+	public JButton getPerfil() {
+		return perfil;
+	}	
 }
