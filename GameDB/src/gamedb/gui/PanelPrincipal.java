@@ -1,8 +1,7 @@
 package gamedb.gui;
 
 import gamedb.controller.PanelPrincipalController;
-import gamedb.model.ConexionBD;
-import gamedb.model.PanelPrincipalModel;
+import gamedb.model.UsuariosModel;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -29,19 +28,19 @@ public class PanelPrincipal extends JPanel{
 	private JComboBox<String> usuario;
 	private JButton login, registrarse, juegos, perfil;
 	private PanelPrincipalController controlador;
-	private PanelPrincipalModel modelo;
+	private UsuariosModel modeloUsuarios = new UsuariosModel();
 	
 	
-	public PanelPrincipal(Dimension d, PanelPrincipalController c, ConexionBD bd) {
+	public PanelPrincipal(Dimension d, PanelPrincipalController c) {
 		
 		size = d;
 		controlador = c;
-		modelo = new PanelPrincipalModel(bd);
 		setName("Principal");
 		
 		setLayout(new GridBagLayout());
 		
 		colocaComponentes();
+		cargaDatos();
 		
 		setVisible(true);
 	}
@@ -119,6 +118,13 @@ public class PanelPrincipal extends JPanel{
 		
 	}
 	
+	private void cargaDatos() {
+		ArrayList<String> usuarios = modeloUsuarios.consultaUsuarios();
+		for (int i = 0; i < usuarios.size()-1; i++) {
+			usuario.addItem(usuarios.get(i));
+		}
+	}
+	
 	/**
 	 *	Redimensiona una imagen recibida como parametro y la devuelve redimensionada.
 	 */
@@ -131,11 +137,6 @@ public class PanelPrincipal extends JPanel{
 		Image imgIcon = i.getImage(); // sacar imagen del ImageIcon
 		Image redimension = imgIcon.getScaledInstance(width, height, Image.SCALE_SMOOTH); // Redimensionamos la imagen
 		return i = new ImageIcon(redimension);
-	}
-	
-	public void cargaDatos() {
-		ArrayList<String> usuarios = modelo.consultaUsuarios();
-		controlador.muestraUsuarios(usuarios);
 	}
 
 	public JPasswordField getContrasea() {

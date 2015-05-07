@@ -26,7 +26,7 @@ public class VentanaPrincipal extends JFrame {
 	private JMenuBar barra;
 	private VentanaPricipalController controlador;
 	
-	public VentanaPrincipal(Dimension d, ConexionBD bd) {
+	public VentanaPrincipal(Dimension d) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(VentanaPrincipal.class.getResource("/gamedb/images/VideojuegosIcono.png")));
 		
 		size = d;
@@ -40,9 +40,8 @@ public class VentanaPrincipal extends JFrame {
 		
 		colocarMenu();
 		
-		panelPrincipal = new PanelPrincipal(getSize(), new PanelPrincipalController(this), bd);
+		panelPrincipal = new PanelPrincipal(getSize(), new PanelPrincipalController(this));
 		getContentPane().add(panelPrincipal.getName(), panelPrincipal);
-		panelPrincipal.cargaDatos();
 		
 		panelJuegos = new PanelJuegos(getSize());
 		getContentPane().add(panelJuegos.getName(), panelJuegos);

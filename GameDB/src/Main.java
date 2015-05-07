@@ -9,9 +9,8 @@ public class Main {
 
 	public static void main(String[] args) {
 		Dimension d = Toolkit.getDefaultToolkit().getScreenSize();// Obtener el tamaño de la pantalla
-		ConexionBD bd = new ConexionBD();
 		//Iniciar aplicacion
-		VentanaPrincipal vp = new VentanaPrincipal(d, bd);
+		VentanaPrincipal vp = new VentanaPrincipal(d);
 	}
 
 }

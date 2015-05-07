@@ -8,14 +8,15 @@ import javax.swing.JOptionPane;
 
 public class ConexionBD {
 	
-	private static final String CLASS_NAME = "com.mysql.jdbc.Driv";
-	private static String bd = "gamedb";
-	private String usuario = "user";
-	private String pass = "user";
+	private static ConexionBD instance = new ConexionBD();
+	private static final String CLASS_NAME = "com.mysql.jdbc.Driver";
+	private String bd = "gamedb";
+	private String usuario = "root";
+	private String pass = "";
 	private String url = "jdbc:mysql://localhost/"+bd;
 	private Connection conexion = null;
 
-	public ConexionBD(){
+	private ConexionBD(){
 		try {
 			Class.forName(CLASS_NAME);
 			conexion = (Connection) DriverManager.getConnection(url, usuario, pass);
@@ -32,5 +33,11 @@ public class ConexionBD {
 	public Connection getConexion() {
 		return conexion;
 	}
+
+	public static ConexionBD getInstance() {
+		return instance;
+	}
+	
+	
 	
 }

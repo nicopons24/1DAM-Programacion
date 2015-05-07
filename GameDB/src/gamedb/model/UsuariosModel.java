@@ -5,23 +5,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class PanelPrincipalModel {
+public class UsuariosModel {
 
 	private static final String id = "id";
 	private static final String usuario = "usuario";
 	private static final String password = "pass";
 	private static final String nombre = "nombre";
 	private static String consulta = "select * from usuario;";
-	private Connection conexion;
+	private ConexionBD conexion = ConexionBD.getInstance();
 	
-	public PanelPrincipalModel(ConexionBD c) {
-		this.conexion = c.getConexion();
+	public UsuariosModel() {
+		
 	}
 	
 	public ArrayList<String> consultaUsuarios() {
 		ArrayList<String> usuarios = new ArrayList<String>();
 		try {
-			ResultSet resultado = conexion.createStatement().executeQuery(consulta);
+			ResultSet resultado = conexion.getConexion().createStatement().executeQuery(consulta);
 			while (resultado.next()) {
 				String n = resultado.getString(nombre);
 				usuarios.add(n);
@@ -33,7 +33,7 @@ public class PanelPrincipalModel {
 		}
 		finally {
 			try {
-				conexion.close();
+				conexion.getConexion().close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
