@@ -1,6 +1,5 @@
 package gamedb.model;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,10 +10,12 @@ public class UsuariosModel {
 	private static final String usuario = "usuario";
 	private static final String password = "pass";
 	private static final String nombre = "nombre";
+	
+	private static UsuariosModel instance = new UsuariosModel();
 	private static String consulta = "select * from usuario;";
 	private ConexionBD conexion = ConexionBD.getInstance();
 	
-	public UsuariosModel() {
+	private UsuariosModel() {
 		
 	}
 	
@@ -39,5 +40,9 @@ public class UsuariosModel {
 			}
 		}
 		return usuarios;
+	}
+
+	public static UsuariosModel getInstance() {
+		return instance;
 	}
 }

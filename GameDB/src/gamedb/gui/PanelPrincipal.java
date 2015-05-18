@@ -1,7 +1,6 @@
 package gamedb.gui;
 
-import gamedb.controller.PanelPrincipalController;
-import gamedb.model.UsuariosModel;
+import gamedb.controller.MainController;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -26,21 +25,16 @@ public class PanelPrincipal extends JPanel{
 	private Dimension size;
 	private JPasswordField contrasea;
 	private JComboBox<String> usuario;
-	private JButton login, registrarse, juegos, perfil;
-	private PanelPrincipalController controlador;
-	private UsuariosModel modeloUsuarios = new UsuariosModel();
+	private JButton login, registrarse, juegos, perfil;	
 	
-	
-	public PanelPrincipal(Dimension d, PanelPrincipalController c) {
+	public PanelPrincipal(Dimension d) {
 		
 		size = d;
-		controlador = c;
 		setName("Principal");
 		
 		setLayout(new GridBagLayout());
 		
 		colocaComponentes();
-		cargaDatos();
 		
 		setVisible(true);
 	}
@@ -106,7 +100,7 @@ public class PanelPrincipal extends JPanel{
 		juegos.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controlador.botonJuegos();
+				MainController.getInstance().mostrarJuegos();
 			}
 		});
 		
@@ -118,8 +112,7 @@ public class PanelPrincipal extends JPanel{
 		
 	}
 	
-	private void cargaDatos() {
-		ArrayList<String> usuarios = modeloUsuarios.consultaUsuarios();
+	public void cargaDatos(ArrayList<String> usuarios) {
 		for (int i = 0; i < usuarios.size()-1; i++) {
 			usuario.addItem(usuarios.get(i));
 		}

@@ -1,8 +1,6 @@
 package gamedb.gui;
 
-import gamedb.controller.PanelPrincipalController;
-import gamedb.controller.VentanaPricipalController;
-import gamedb.model.ConexionBD;
+import gamedb.controller.MainController;
 
 import java.awt.CardLayout;
 import java.awt.Dimension;
@@ -14,7 +12,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 
 public class VentanaPrincipal extends JFrame {
 
@@ -24,13 +21,11 @@ public class VentanaPrincipal extends JFrame {
 	private JMenu menuPrincipal, menuJuegos, menuPerfil;
 	private JMenuItem itemPrincipal, itemJuegos, itemPerfil;
 	private JMenuBar barra;
-	private VentanaPricipalController controlador;
 	
 	public VentanaPrincipal(Dimension d) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(VentanaPrincipal.class.getResource("/gamedb/images/VideojuegosIcono.png")));
 		
 		size = d;
-		controlador = new VentanaPricipalController(this);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(true);
 		
@@ -40,7 +35,7 @@ public class VentanaPrincipal extends JFrame {
 		
 		colocarMenu();
 		
-		panelPrincipal = new PanelPrincipal(getSize(), new PanelPrincipalController(this));
+		panelPrincipal = new PanelPrincipal(getSize());
 		getContentPane().add(panelPrincipal.getName(), panelPrincipal);
 		
 		panelJuegos = new PanelJuegos(getSize());
@@ -61,12 +56,10 @@ public class VentanaPrincipal extends JFrame {
 		// ITEMS MENU PRINCIPAL
 		itemPrincipal = new JMenuItem("Principal");
 		menuPrincipal.add(itemPrincipal);
-		itemPrincipal.addActionListener(new ActionListener() {
-			
+		itemPrincipal.addActionListener(new ActionListener() {	
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				controlador.panelPrincipal();
+				MainController.getInstance().mostrarPrincipal();
 			}
 		});
 		
@@ -77,11 +70,9 @@ public class VentanaPrincipal extends JFrame {
 		itemJuegos = new JMenuItem("Juegos");
 		menuJuegos.add(itemJuegos);
 		itemJuegos.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				controlador.panelJuegos();
+				MainController.getInstance().mostrarJuegos();
 			}
 		});
 		
@@ -94,11 +85,11 @@ public class VentanaPrincipal extends JFrame {
 		
 	}
 
-	public JPanel getPanelPrincipal() {
+	public PanelPrincipal getPanelPrincipal() {
 		return panelPrincipal;
 	}
 
-	public JPanel getPanelJuegos() {
+	public PanelJuegos getPanelJuegos() {
 		return panelJuegos;
 	}
 
