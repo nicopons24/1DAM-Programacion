@@ -6,25 +6,25 @@ import java.util.ArrayList;
 
 public class UsuariosModel {
 
-	private static final String id = "id";
-	private static final String usuario = "usuario";
-	private static final String password = "pass";
-	private static final String nombre = "nombre";
+	private static final String ID = "id";
+	private static final String USUARIO = "usuario";
+	private static final String PASSWORD = "pass";
+	private static final String NOMBRE = "nombre";
 	
 	private static UsuariosModel instance = new UsuariosModel();
-	private static String consulta = "select * from usuario;";
-	private ConexionBD conexion = ConexionBD.getInstance();
+	private ConexionBD conexion;
 	
 	private UsuariosModel() {
-		
+		conexion = ConexionBD.getInstance();
 	}
 	
 	public ArrayList<String> consultaUsuarios() {
 		ArrayList<String> usuarios = new ArrayList<String>();
+		String consulta = "select * from usuario;";
 		try {
 			ResultSet resultado = conexion.getConexion().createStatement().executeQuery(consulta);
 			while (resultado.next()) {
-				String n = resultado.getString(nombre);
+				String n = resultado.getString(NOMBRE);
 				usuarios.add(n);
 			}
 			resultado.close();
