@@ -21,9 +21,6 @@ public class ConexionBD {
 			Class.forName(CLASS_NAME);
 			conexion = (Connection) DriverManager.getConnection(url, usuario, pass);
 			conexion.setAutoCommit(false);
-			if (conexion != null) {
-				System.out.println("Conexion correcta");
-			}
 		} 
 		catch (ClassNotFoundException | SQLException e) {
 			JOptionPane.showMessageDialog(null, e, "GameDB", JOptionPane.ERROR_MESSAGE);

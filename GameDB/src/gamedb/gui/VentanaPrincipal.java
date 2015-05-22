@@ -92,32 +92,4 @@ public class VentanaPrincipal extends JFrame {
 	public PanelJuegos getPanelJuegos() {
 		return panelJuegos;
 	}
-
-	public JMenu getMenuPrincipal() {
-		return menuPrincipal;
-	}
-
-	public JMenu getMenuJuegos() {
-		return menuJuegos;
-	}
-
-	public JMenu getMenuPerfil() {
-		return menuPerfil;
-	}
-
-	public JMenuItem getItemPrincipal() {
-		return itemPrincipal;
-	}
-
-	public JMenuItem getItemJuegos() {
-		return itemJuegos;
-	}
-
-	public JMenuItem getItemPerfil() {
-		return itemPerfil;
-	}
-
-	public JMenuBar getBarra() {
-		return barra;
-	}
 }

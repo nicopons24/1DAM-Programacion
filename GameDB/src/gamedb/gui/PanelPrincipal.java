@@ -1,6 +1,7 @@
 package gamedb.gui;
 
 import gamedb.controller.MainController;
+import gamedb.model.Usuario;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -24,7 +25,7 @@ public class PanelPrincipal extends JPanel{
 	
 	private Dimension size;
 	private JPasswordField contrasea;
-	private JComboBox<String> usuario;
+	private JComboBox<Usuario> usuario;
 	private JButton login, registrarse, juegos, perfil;	
 	
 	public PanelPrincipal(Dimension d) {
@@ -60,7 +61,7 @@ public class PanelPrincipal extends JPanel{
 		GridBagConstraints posLblUsuario = new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0);
 		add(lblUsuario, posLblUsuario);
 		
-		usuario = new JComboBox<String>();
+		usuario = new JComboBox<Usuario>();
 		usuario.setToolTipText("Tipo de usuario");
 		// posicion en el layout y propiedades
 		GridBagConstraints posUsuario = new GridBagConstraints(0, 3, 2, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0);
@@ -112,8 +113,12 @@ public class PanelPrincipal extends JPanel{
 		
 	}
 	
-	public void cargaDatos(ArrayList<String> usuarios) {
-		for (int i = 0; i < usuarios.size()-1; i++) {
+	/**
+	 * Coloca los usuarios en el ComboBox
+	 * 
+	 */
+	public void cargaDatos(ArrayList<Usuario> usuarios) {
+		for (int i = 0; i < usuarios.size(); i++) {
 			usuario.addItem(usuarios.get(i));
 		}
 	}
@@ -134,25 +139,5 @@ public class PanelPrincipal extends JPanel{
 
 	public JPasswordField getContrasea() {
 		return contrasea;
-	}
-
-	public JComboBox<String> getUsuario() {
-		return usuario;
-	}
-
-	public JButton getLogin() {
-		return login;
-	}
-
-	public JButton getRegistrarse() {
-		return registrarse;
-	}
-
-	public JButton getJuegos() {
-		return juegos;
-	}
-
-	public JButton getPerfil() {
-		return perfil;
 	}	
 }

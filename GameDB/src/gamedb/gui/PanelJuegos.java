@@ -1,10 +1,14 @@
 package gamedb.gui;
 
+import gamedb.controller.MainController;
+import gamedb.model.Juego;
+
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -14,7 +18,13 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class PanelJuegos extends JPanel {
 
@@ -22,7 +32,8 @@ public class PanelJuegos extends JPanel {
 	private JPanel filtro;
 	private JTextField filtroNombre, nombre, genero, plataforma;
 	private JComboBox filtroGenero, filtroPlataforma;
-	private JList juegos;
+	private JList<Juego> juegos;
+	private DefaultListModel<Juego> modeloJuego;
 	private JButton editar, guardar;
 	
 	public PanelJuegos(Dimension d) {
@@ -43,15 +54,24 @@ public class PanelJuegos extends JPanel {
 		
 		Insets insets = new Insets(5, 5, 5, 5);
 		
-		juegos = new JList();
+		juegos = new JList<Juego>();
+		modeloJuego = new DefaultListModel<Juego>();
+		juegos.setModel(modeloJuego);
 		GridBagConstraints posJuegos = new GridBagConstraints(0, 1, 1, 7, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, insets, 0, 0);
 		add(juegos, posJuegos);
+		juegos.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				MainController.getInstance().muestraDatosJuego(juegos.getSelectedValue());
+			}
+		});
 		
 		JLabel nombre = new JLabel("Nombre:");
 		GridBagConstraints posNom = new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0);
 		add(nombre, posNom);
 		
 		this.nombre = new JTextField();
+		this.nombre.setEnabled(false);
 		GridBagConstraints posNombre = new GridBagConstraints(1, 2, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0);
 		add(this.nombre, posNombre);
 		
@@ -60,6 +80,7 @@ public class PanelJuegos extends JPanel {
 		add(genero, posGen);
 		
 		this.genero = new JTextField();
+		this.genero.setEnabled(false);
 		GridBagConstraints posGenero = new GridBagConstraints(1, 4, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0);
 		add(this.genero, posGenero);
 		
@@ -68,16 +89,31 @@ public class PanelJuegos extends JPanel {
 		add(plataforma, posPlat);
 		
 		this.plataforma = new JTextField();
+		this.plataforma.setEnabled(false);
 		GridBagConstraints posPlataforma = new GridBagConstraints(1, 6, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0);
 		add(this.plataforma, posPlataforma);
 		
 		editar = new JButton("Editar");
 		GridBagConstraints posEditar = new GridBagConstraints(1, 7, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, insets, 0, 0);
 		add(editar, posEditar);
+		editar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				MainController.getInstance().editarJuego();
+			}
+		});
 		
 		guardar = new JButton("Guardar");
 		GridBagConstraints posGuardar = new GridBagConstraints(2, 7, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, insets, 0, 0);
 		add(guardar, posGuardar);
+		guardar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (juegos.getSelectedIndex() != -1){
+					MainController.getInstance().guardarJuego(juegos.getSelectedValue(), juegos.getSelectedIndex());
+				}
+			}
+		});
 	}
 	
 	private void panelFiltro() {
@@ -114,17 +150,15 @@ public class PanelJuegos extends JPanel {
 		GridBagConstraints posPlataforma= new GridBagConstraints(2, 1, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, insets, 0, 0);
 		filtro.add(filtroPlataforma, posPlataforma);
 	}
-
-	public Dimension getSize() {
-		return size;
+	
+	public void cargaDatos(ArrayList<Juego> juegos) {
+		for (int i = 0; i < juegos.size(); i++) {
+			modeloJuego.addElement(juegos.get(i));
+		}
 	}
 
-	public JPanel getFiltro() {
-		return filtro;
-	}
-
-	public JTextField getFiltroNombre() {
-		return filtroNombre;
+	public DefaultListModel<Juego> getModeloJuego() {
+		return modeloJuego;
 	}
 
 	public JTextField getNombre() {
@@ -138,26 +172,4 @@ public class PanelJuegos extends JPanel {
 	public JTextField getPlataforma() {
 		return plataforma;
 	}
-
-	public JComboBox getFiltroGenero() {
-		return filtroGenero;
-	}
-
-	public JComboBox getFiltroPlataforma() {
-		return filtroPlataforma;
-	}
-
-	public JList getJuegos() {
-		return juegos;
-	}
-
-	public JButton getEditar() {
-		return editar;
-	}
-
-	public JButton getGuardar() {
-		return guardar;
-	}
-	
-	
 }

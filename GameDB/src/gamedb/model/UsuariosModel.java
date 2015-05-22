@@ -18,26 +18,27 @@ public class UsuariosModel {
 		conexion = ConexionBD.getInstance();
 	}
 	
-	public ArrayList<String> consultaUsuarios() {
-		ArrayList<String> usuarios = new ArrayList<String>();
+	/**
+	 * Consulta los nombres de los usuarios de la BD
+	 * 
+	 */
+	public ArrayList<Usuario> consultaUsuarios() {
+		ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 		String consulta = "select * from usuario;";
 		try {
 			ResultSet resultado = conexion.getConexion().createStatement().executeQuery(consulta);
 			while (resultado.next()) {
-				String n = resultado.getString(NOMBRE);
-				usuarios.add(n);
+				int id = resultado.getInt(ID);
+				String user = resultado.getString(USUARIO);
+				String nom = resultado.getString(NOMBRE);
+				String pass = resultado.getString(PASSWORD);
+				Usuario u = new Usuario(id, nom, user, pass);
+				usuarios.add(u);
 			}
 			resultado.close();
 		} 
 		catch (SQLException e) {
 			e.printStackTrace();
-		}
-		finally {
-			try {
-				conexion.getConexion().close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 		return usuarios;
 	}
