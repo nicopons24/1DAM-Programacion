@@ -24,7 +24,7 @@ public class UsuariosModel {
 	 */
 	public ArrayList<Usuario> consultaUsuarios() {
 		ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
-		String consulta = "select * from usuario;";
+		String consulta = "select * from usuarios;";
 		try {
 			ResultSet resultado = conexion.getConexion().createStatement().executeQuery(consulta);
 			while (resultado.next()) {
