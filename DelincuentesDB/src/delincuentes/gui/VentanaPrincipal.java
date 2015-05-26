@@ -86,6 +86,10 @@ public class VentanaPrincipal extends JFrame {
 		panelAntecedentes = new PanelAntecedentes();
 		panelCardLayout.add(panelAntecedentes, panelAntecedentes.getName());
 	}
+	
+	public void setError(String error) {
+		txtInfo.setText(error);
+	}
 
 	public PanelPrincipal getPanelPrincipal() {
 		return panelPrincipal;

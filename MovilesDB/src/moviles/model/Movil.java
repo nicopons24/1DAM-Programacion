@@ -5,11 +5,10 @@ import java.util.Date;
 public class Movil {
 
 	private int id, reparado;
-	private String tecnico, movil, descripcion;
-	private Date fechaReparado, fechaMax;
-	
+	private String tecnico, movil, descripcion, fechaReparado, fechaMax;
+
 	public Movil(int id, int reparado, String tecnico, String movil,
-			String descripcion, Date fechaReparado, Date fechaMax) {
+			String descripcion, String fechaReparado, String fechaMax) {
 		super();
 		this.id = id;
 		this.reparado = reparado;
@@ -60,19 +59,19 @@ public class Movil {
 		this.descripcion = descripcion;
 	}
 
-	public Date getFechaReparado() {
+	public String getFechaReparado() {
 		return fechaReparado;
 	}
 
-	public void setFechaReparado(Date fechaReparado) {
+	public void setFechaReparado(String fechaReparado) {
 		this.fechaReparado = fechaReparado;
 	}
 
-	public Date getFechaMax() {
+	public String getFechaMax() {
 		return fechaMax;
 	}
 
-	public void setFechaMax(Date fechaMax) {
+	public void setFechaMax(String fechaMax) {
 		this.fechaMax = fechaMax;
 	}
 	

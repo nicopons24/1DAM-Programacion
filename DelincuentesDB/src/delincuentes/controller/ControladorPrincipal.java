@@ -1,6 +1,8 @@
 package delincuentes.controller;
 
 import java.awt.CardLayout;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 import delincuentes.gui.VentanaPrincipal;
@@ -13,11 +15,15 @@ public class ControladorPrincipal {
 
 	private static ControladorPrincipal instance = new ControladorPrincipal();
 	private VentanaPrincipal vPrincipal;
+	private Autenticador autenticador;
 	private ModeloDelincuente modeloDelincuente;
 	private ModeloUsuario modeloUsuario;
+	private boolean aut;
 	
 	private ControladorPrincipal() {
 		vPrincipal = new VentanaPrincipal();
+		aut = false;
+		autenticador = new Autenticador();
 		modeloUsuario = ModeloUsuario.getInstance();
 		modeloDelincuente = ModeloDelincuente.getInstance();
 		
@@ -51,7 +57,30 @@ public class ControladorPrincipal {
 		d.setAntecedentes(vPrincipal.getPanelAntecedentes().getTextArea().getText());
 		vPrincipal.getPanelDelincuentes().getModeloLista().setElementAt(d, sel);
 		modeloDelincuente.actualizaDelincuente(d);
-		mostrarPrincipal();
+		vPrincipal.setError("Delincuente actualizado correctamente");
+		mostrarDelincuentes();
+		}
+	
+	public void logIn(Usuario u, String pass) {
+		String insert = null;
+		try {
+			insert = Autenticador.StringToMD5(pass);
+		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		if (u.getPass().equals(insert)) {
+			vPrincipal.setError("Sesion iniciada correctamente");
+			aut = true;
+			mostrarDelincuentes();
+		}
+		else {
+			vPrincipal.setError("Contraseña incorrecta");
+		}
+	}
+	
+	public void logOut() {
+		aut = false;
+		vPrincipal.setError("Desconectado correctamente");
 	}
 	
 	public void mostrarPrincipal() {
@@ -60,8 +89,13 @@ public class ControladorPrincipal {
 	}
 	
 	public void mostrarDelincuentes() {
-		CardLayout cl = (CardLayout) vPrincipal.getPanelCardLayout().getLayout();
-		cl.show(vPrincipal.getPanelCardLayout(), vPrincipal.getPanelDelincuentes().getName());
+		if (aut) {
+			CardLayout cl = (CardLayout) vPrincipal.getPanelCardLayout().getLayout();
+			cl.show(vPrincipal.getPanelCardLayout(), vPrincipal.getPanelDelincuentes().getName());
+		}
+		else {
+			vPrincipal.setError("Inicia sesion para acceder a los Delincuentes");
+		}
 	}
 	
 	public void mostrarAntecedentes() {
