@@ -33,8 +33,7 @@ public class VentanaPrincipal extends JFrame {
 		getContentPane().add(panelCardLayout, BorderLayout.CENTER);
 		panelCardLayout.setLayout(new CardLayout(0, 0));
 		
-		panelPrincipal = new JPanel();
-		panelPrincipal.setName("principal");
+		panelPrincipal = new PanelPrincipal();
 		panelCardLayout.add(panelPrincipal, panelPrincipal.getName());
 		
 		panelReparados = new PanelReparados();

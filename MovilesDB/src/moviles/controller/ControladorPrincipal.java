@@ -4,9 +4,17 @@ import java.awt.CardLayout;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.table.AbstractTableModel;
 
 import moviles.gui.VentanaPrincipal;
 import moviles.model.ModeloMovil;
+import moviles.model.ModeloTablaPorReparar;
+import moviles.model.ModeloTablaReparados;
 import moviles.model.ModeloUsuario;
 import moviles.model.Movil;
 import moviles.model.Usuario;
@@ -15,7 +23,6 @@ public class ControladorPrincipal {
 
 	private static ControladorPrincipal instance = new ControladorPrincipal();
 	private VentanaPrincipal vPrincipal;
-	private Autenticador autenticador;
 	private ModeloUsuario modeloUsuario;
 	private ModeloMovil modeloMovil;
 	private boolean aut;
@@ -24,7 +31,6 @@ public class ControladorPrincipal {
 		vPrincipal = new VentanaPrincipal();
 		modeloUsuario = ModeloUsuario.getInstance();
 		modeloMovil = ModeloMovil.getInstance();
-		autenticador = new Autenticador();
 		aut = false;
 		
 		cargaUsuarios();
@@ -45,14 +51,42 @@ public class ControladorPrincipal {
 		vPrincipal.getPanelPorReparar().setTableModel(moviles);
 	}
 	
-	public void entrar(Usuario u, String pass) {
-		String insert = "";
-		try {
-			insert = autenticador.StringToMD5(pass);
-		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-			e.printStackTrace();
+	private String getDate() {
+		Calendar calendario = Calendar.getInstance();
+		int dia = calendario.get(Calendar.DAY_OF_MONTH);
+		int mes = 1+calendario.get(Calendar.MONTH);
+		int ano = calendario.get(Calendar.YEAR);
+		if (mes < 10) {
+			return new String(dia+"/0"+mes+"/"+ano);
 		}
-		if (u.getPass().equals(insert)) {
+		return new String(dia+"/"+mes+"/"+ano);
+	}
+	
+	public void guardaMovilReparado(int selectedIndex) {
+		ModeloTablaPorReparar modeloPorReparar = (ModeloTablaPorReparar) vPrincipal.getPanelPorReparar().getTable().getModel();
+		Movil m = modeloPorReparar.getMovilAt(selectedIndex);
+		ModeloTablaReparados modeloReparados = (ModeloTablaReparados) vPrincipal.getPanelReparados().getTable().getModel();
+		m.setFechaReparado(getDate());
+		modeloReparados.addRow(m);
+		modeloPorReparar.deleteRow(selectedIndex);
+		modeloMovil.updateMovil(m);
+		vPrincipal.setError("Datos actualizados correctamente");
+	}
+	
+	public void descripcionReparados(int selectedIndex) {
+		ModeloTablaReparados modeloTabla = (ModeloTablaReparados) vPrincipal.getPanelReparados().getTable().getModel();
+		Movil m = modeloTabla.getMovilAt(selectedIndex);
+		vPrincipal.getPanelReparados().setDescripcionMovil(m.getDescripcion());
+	}
+	
+	public void descripcionPorReparar(int selectedIndex) {
+		ModeloTablaPorReparar modeloTabla = (ModeloTablaPorReparar) vPrincipal.getPanelPorReparar().getTable().getModel();
+		Movil m = modeloTabla.getMovilAt(selectedIndex);
+		vPrincipal.getPanelPorReparar().setDescripcionMovil(m.getDescripcion());
+	}
+	
+	public void entrar(Usuario u, String pass) {
+		if (u.getPass().equals(pass)) {
 			aut = true;
 			cargaMovilesReparados(u.getUsuario());
 			cargaMovilesPorReparar(u.getUsuario());

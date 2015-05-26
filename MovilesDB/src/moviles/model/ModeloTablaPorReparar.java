@@ -46,4 +46,13 @@ public class ModeloTablaPorReparar extends AbstractTableModel{
 	public String getColumnName(int columnIndex) {
 		return TITULOS[columnIndex];
 	}
+	
+	public void deleteRow (int idex) {
+		moviles.remove(idex);
+		fireTableRowsDeleted(idex, idex);
+	}
+
+	public Movil getMovilAt(int pos) {
+		return moviles.get(pos);
+	}
 }

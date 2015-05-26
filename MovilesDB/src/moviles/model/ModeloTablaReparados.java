@@ -46,4 +46,13 @@ public class ModeloTablaReparados extends AbstractTableModel {
 	public String getColumnName(int columnIndex) {
 		return TITULOS[columnIndex];
 	}
+	
+	public void addRow(Movil m) {
+		moviles.add(m);
+		fireTableRowsInserted(getRowCount(), getRowCount());
+	}
+
+	public Movil getMovilAt(int pos) {
+		return moviles.get(pos);
+	}
 }

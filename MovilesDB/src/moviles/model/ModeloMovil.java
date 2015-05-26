@@ -28,7 +28,7 @@ public class ModeloMovil {
 	
 	public ArrayList<Movil> consultaMovilesReparados(String usuario) {
 		ArrayList<Movil> moviles = new ArrayList<Movil>();
-		String consulta = "select * from moviles where reparados = 1 and tecnico = '"+usuario+"';";
+		String consulta = "select * from moviles where "+REP+" = 1 and "+TEC+" = '"+usuario+"';";
 		try {
 			ResultSet r = conexion.createStatement().executeQuery(consulta);
 			while (r.next()) {
@@ -54,7 +54,7 @@ public class ModeloMovil {
 	
 	public ArrayList<Movil> consultaMovilesPorReparar(String usuario) {
 		ArrayList<Movil> moviles = new ArrayList<Movil>();
-		String consulta = "select * from moviles where reparados = 0 and tecnico = '"+usuario+"';";
+		String consulta = "select * from moviles where "+REP+" = 0 and "+TEC+" = '"+usuario+"';";
 		try {
 			ResultSet r = conexion.createStatement().executeQuery(consulta);
 			while (r.next()) {
@@ -78,9 +78,28 @@ public class ModeloMovil {
 		return moviles;
 	}
 	
-	private String DateToString(Date data) {
+	public void updateMovil(Movil m) {
+		String update = "update moviles set "+REP+" = 1, "+FREP+" = '"+StringToDate(m.getFechaReparado())+"' where "+ID+" = "+m.getId()+";";
+		try {
+			conexion.createStatement().executeUpdate(update);
+			conexion.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private String StringToDate(String date) {
+		int barra1 = date.indexOf("/", 0);
+		int barra2 = date.indexOf("/", 1+barra1);
+		String dia = date.substring(0, barra1);
+		String mes = date.substring(1+barra1, barra2);
+		String ano = date.substring(1+barra2);
+		return new String(ano+"-"+mes+"-"+dia);
+	}
+	
+	private String DateToString(Date date) {
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-		String fecha = formato.format(data);
+		String fecha = formato.format(date);
 		return fecha;
 	}
 	
