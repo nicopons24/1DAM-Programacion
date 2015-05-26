@@ -45,10 +45,24 @@ public class PanelMenu extends JPanel {
 		btnEntrar = new JButton("Entrar");
 		GridBagConstraints gbc_btnEntrar = new GridBagConstraints(0, 2, 1, 1, 1.0, 1.0, GridBagConstraints.SOUTH, GridBagConstraints.HORIZONTAL, insets, 0, 0);;
 		add(btnEntrar, gbc_btnEntrar);
+		btnEntrar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ControladorPrincipal.getInstance().entrar((Usuario) comboBox.getSelectedItem(), new String(passwordField.getPassword()));
+				passwordField.setText("");
+			}
+		});
 		
 		btnSalir = new JButton("Salir");
 		GridBagConstraints gbc_btnSalir = new GridBagConstraints(0, 3, 1, 1, 1.0, 1.0, GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL, insets, 0, 0);
 		add(btnSalir, gbc_btnSalir);
+		btnSalir.setEnabled(false);
+		btnSalir.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ControladorPrincipal.getInstance().salir();
+			}
+		});
 		
 		btnReparados = new JButton("Reparados");
 		GridBagConstraints gbc_btnReparados = new GridBagConstraints(0, 4, 1, 1, 1.0, 1.0, GridBagConstraints.SOUTH, GridBagConstraints.HORIZONTAL, insets, 0, 0);
@@ -75,6 +89,11 @@ public class PanelMenu extends JPanel {
 		for (int i = 0; i < usuarios.size(); i++) {
 			comboBox.addItem(usuarios.get(i));
 		}
+	}
+
+	public void setLogueado(boolean b) {
+		btnEntrar.setEnabled(!b);
+		btnSalir.setEnabled(b);
 	}
 
 }

@@ -3,6 +3,7 @@ package moviles.gui;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -10,6 +11,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
+
+import moviles.model.ModeloTablaPorReparar;
+import moviles.model.Movil;
 
 public class PanelPorReparar extends JPanel {
 	
@@ -49,6 +53,10 @@ public class PanelPorReparar extends JPanel {
 		GridBagConstraints gbc_btnReparado = new GridBagConstraints(0, 3, 1, 1, 1.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, insets, 0, 0);
 		add(btnReparado, gbc_btnReparado);
 	
+	}
+
+	public void setTableModel(ArrayList<Movil> moviles) {
+		table.setModel(new ModeloTablaPorReparar(moviles));
 	}
 
 }

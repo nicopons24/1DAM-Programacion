@@ -47,12 +47,20 @@ public class VentanaPrincipal extends JFrame {
 		getContentPane().add(panelMenu, BorderLayout.WEST);
 		
 		textField = new JTextField();
-		textField.setEnabled(false);
+		textField.setEditable(false);
 		getContentPane().add(textField, BorderLayout.SOUTH);
+	}
+	
+	public void setError(String error) {
+		textField.setText(error);
 	}
 
 	public JPanel getPanelCardLayout() {
 		return panelCardLayout;
+	}
+
+	public JPanel getPanelPrincipal() {
+		return panelPrincipal;
 	}
 
 	public PanelReparados getPanelReparados() {
